@@ -13,8 +13,6 @@ class BukuController extends Controller
         // Ambil input ?cari=..., paksa jadi string, buang spasi di tepi
         $cari = trim((string) $request->query('cari', ''));
 
-        // Kalau $cari kosong, semua buku lolos.
-        // Kalau tidak, judul harus mengandung $cari (stripos = tidak peka huruf besar/kecil).
         $buku = array_values(array_filter(
             Buku::contoh(),
             fn ($item) => $cari === '' || stripos($item['judul'], $cari) !== false
@@ -25,14 +23,12 @@ class BukuController extends Controller
 
     public function show(string $kode): View
     {
-        // Cari buku yang kodenya cocok persis
         foreach (Buku::contoh() as $item) {
             if ($item['kode'] === $kode) {
                 return view('buku.show', ['buku' => $item]);
             }
         }
 
-        // Tidak ditemukan -> HTTP 404
         abort(404);
     }
 }
