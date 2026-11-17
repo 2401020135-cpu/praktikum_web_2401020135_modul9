@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Buku extends Model
 {
-    public static function contoh(): array
+    // Whitelist kolom yang boleh diisi massal (proteksi mass assignment)
+    protected $fillable = ['kode', 'judul', 'kategori_id'];
+
+    // Relasi: satu Buku milik satu Kategori
+    public function kategori(): BelongsTo
     {
-        return [
-            ['kode' => 'BK001', 'judul' => 'Dasar PHP'],
-            ['kode' => 'BK002', 'judul' => 'Belajar Laravel'],
-            ['kode' => 'BK003', 'judul' => 'Logika Web'],
-            ['kode' => 'BK004', 'judul' => 'Sistem Informasi Pelayaran'],
-        ];
+        return $this->belongsTo(Kategori::class);
     }
 }
